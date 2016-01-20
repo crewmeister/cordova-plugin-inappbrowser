@@ -843,6 +843,11 @@ public class InAppBrowser extends CordovaPlugin {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
+            // by crewmeister START, due to unreliable cookie storing on the device
+            // more info see https://issues.apache.org/jira/browse/CB-10395
+            CookieManager.getInstance().flush();
+            // by crewmeister END
+
             try {
                 JSONObject obj = new JSONObject();
                 obj.put("type", LOAD_STOP_EVENT);
