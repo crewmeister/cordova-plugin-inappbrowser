@@ -41,6 +41,7 @@ import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -845,7 +846,11 @@ public class InAppBrowser extends CordovaPlugin {
 
             // by crewmeister START, due to unreliable cookie storing on the device
             // more info see https://issues.apache.org/jira/browse/CB-10395
-            CookieManager.getInstance().flush();
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+              CookieManager.getInstance().flush();
+            } else {
+              CookieSyncManager.getInstance().sync();
+            }
             // by crewmeister END
 
             try {
